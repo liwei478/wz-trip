@@ -22,6 +22,25 @@ const router = createRouter({
     {
       path: "/message",
       component: () => import("../views/message/message.vue")
+    },
+    {
+      path: "/city",
+      component: () => import("../views/city/city.vue"),
+      // 隐藏底部tabbar方案一
+      meta: {
+        hiddenTab: true
+      }
+    },
+    {
+      path: "/search",
+      component: () => import("../views/search/search.vue"),
+      meta: {
+        hiddenTab: true
+      }
+    },
+    {
+      path: "/detail/:id",
+      component: () => import("../views/detail/detail.vue")
     }
   ]
 })
