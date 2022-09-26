@@ -1,6 +1,6 @@
 <template>
   <div class="detail top-page" ref="detailRef">
-    <tab-control v-if="showTabControl" class="tabs" :titles="names" @tabItemClick="tabClick" />
+    <tab-control v-if="showTabControl" class="tabs" :titles="names" @tabItemClick="tabClick" ref="tabControlRef" />
     <van-nav-bar title="房屋详情" left-text="旅途" left-arrow @click-left="onClickLeft" />
     <div class="main" v-if="detailInfos?.mainPart?.topModule?.housePicture?.housePics" v-memo="[detailInfos]">
       <detail-swiper />
@@ -32,7 +32,7 @@ import DetailNotice from "./cpns/detail_06-notice.vue"
 import DetailMap from "./cpns/detail_07-map.vue"
 import DetailIntro from "./cpns/detail_08-intro.vue"
 import TabControl from "@/components/tab-control/tab-control.vue"
-import { computed, ref } from "vue"
+import { computed, ref, watch } from "vue"
 import useScroll from "@/hooks/useScrollBottom"
 
 const route = useRoute()
@@ -64,22 +64,53 @@ const names = computed(() => {
   return Object.keys(sectionEls.value)
 })
 const getSectionRef = value => {
+  if (!value) return
   const name = value.$el.getAttribute("name")
-
   sectionEls.value[name] = value.$el
 }
 
+let isClick = false
+let currentDistance = -1
 const tabClick = index => {
   const key = Object.keys(sectionEls.value)[index]
   const el = sectionEls.value[key]
-  let instance = el.offsetTop
-  if (index !== 0) instance = instance - 44
+  let distance = el.offsetTop
+  if (index !== 0) {
+    distance = distance - 44
+  }
+
+  isClick = true
+  currentDistance = distance
 
   detailRef.value.scrollTo({
-    top: instance,
+    top: distance,
     behavior: "smooth"
   })
 }
+
+// 页面滚动, 滚动时匹配对应的tabControll的index
+const tabControlRef = ref()
+watch(scrollTop, newValue => {
+  if (newValue === currentDistance) {
+    isClick = false
+  }
+  if (isClick) return
+
+  // 1.获取所有的区域的offsetTops
+  const els = Object.values(sectionEls.value)
+  const values = els.map(el => el.offsetTop)
+
+  // 2.根据newValue去匹配想要索引
+  let index = values.length - 1
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] > newValue + 44) {
+      index = i - 1
+      break
+    }
+  }
+  // console.log(index)
+  tabControlRef.value?.setCurrentIndex(index)
+})
 </script>
 
 <style lang="less" scoped>
