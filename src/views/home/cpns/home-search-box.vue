@@ -74,12 +74,8 @@ const cityClick = () => {
 }
 const positionClick = () => {
   navigator.geolocation.getCurrentPosition(
-    res => {
-      console.log("获取位置成功：", res)
-    },
-    err => {
-      console.log("获取位置失败：", err)
-    }
+    res => {},
+    err => {}
   )
 }
 // 获取当前城市
@@ -121,9 +117,10 @@ const searchBtnClick = () => {
   router.push({
     path: "/search",
     query: {
-      startDate: startDate.value,
-      endDate: endDate.value,
-      currentCity: currentCity.value.cityName
+      startDate: formatMonthDay(startDate.value, "MM-DD"),
+      endDate: formatMonthDay(endDate.value, "MM-DD"),
+      address: currentCity.value.cityName,
+      cityId: 45
     }
   })
 }
