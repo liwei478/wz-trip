@@ -71,7 +71,7 @@ const onCancel = () => {
   emit("cancel")
 }
 const handleTagClick = (subItem, item) => {
-  emit("tagClick", { typeName: item.name, keyWord: subItem.name })
+  emit("tagClick", { typeName: item?.name, keyWord: subItem.name })
 }
 const handleResultItemClick = item => {
   emit("resultItemClick", item)
