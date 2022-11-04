@@ -20,25 +20,26 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
 defineProps({
   title: {
     type: String,
-    default: "标题",
+    default: "标题"
   },
   leftText: {
     type: String,
-    default: "",
-  },
-});
+    default: ""
+  }
+})
 
-const emit = defineEmits(["leftClick"]);
+const emit = defineEmits(["leftClick"])
 
-const router = useRouter();
+const router = useRouter()
+
 const handleLeftClick = () => {
-  router.go(-1);
-  emit("leftClick");
-};
+  router.go(-1)
+  emit("leftClick")
+}
 </script>
 
 <style lang="less" scoped>
