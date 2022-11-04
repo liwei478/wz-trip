@@ -35,7 +35,6 @@ defineProps({
 const emit = defineEmits(["leftClick"])
 
 const router = useRouter()
-
 const handleLeftClick = () => {
   router.go(-1)
   emit("leftClick")
